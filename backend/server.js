@@ -7,16 +7,16 @@ const app = express();
 
 app.use(bodyParser.json());
 
-db.pool.query(
-  `CREATE TABLE lists (
-    id INTEGER AUTO_INCREMENT,
-    value TEXT,
-    PRIMARY KEY (id)
-)`,
-  (err, results, fileds) => {
-    console.log('results', results);
-  }
-);
+// db.pool.query(
+//   `CREATE TABLE lists (
+//     id INTEGER AUTO_INCREMENT,
+//     value TEXT,
+//     PRIMARY KEY (id)
+// )`,
+//   (err, results, fileds) => {
+//     console.log('results', results);
+//   }
+// );
 
 app.get('/api/values', (req, res) => {
   db.pool.query('SELECT * FROM lists;', (err, results, fileds) => {
@@ -41,6 +41,6 @@ app.post('/api/value', (req, res, next) => {
   );
 });
 
-app.listen(5000, () => {
-  console.log('어플리케이션이 5000번 포트에서 시작되었습니다.');
+app.listen(8080, () => {
+  console.log('어플리케이션이 8080번 포트에서 시작되었습니다.');
 });

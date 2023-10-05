@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/values')
+      .get('http://localhost:8080/api/values')
       .then((res) => {
         console.log(res);
         setLists(res.data);
@@ -28,7 +28,7 @@ function App() {
     console.log(value, 'submit!');
 
     axios
-      .post('http://localhost:5000/api/value', { value })
+      .post('http://localhost:8080/api/value', { value })
       .then((res) => {
         if (res.data.success) {
           console.log(res);
