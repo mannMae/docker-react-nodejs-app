@@ -40,6 +40,7 @@ app.post('/api/value', (req, res, next) => {
   db.pool.query(
     `INSERT INTO lists (value) VALUES("${req.body.value}")`,
     (err, results, fileds) => {
+      console.log(err);
       console.log(results);
       if (err) {
         return res.status(500).send(err);
