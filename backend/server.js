@@ -51,6 +51,14 @@ app.post('/api/value', (req, res, next) => {
   );
 });
 
+app.get('/', (req, res) => {
+  return res.json({ message: 'Hello World' });
+});
+
+app.get('/api', (req, res) => {
+  return res.json({ message: 'pong' });
+});
+
 app.listen(8080, () => {
   console.log('어플리케이션이 8080번 포트에서 시작되었습니다.');
 });

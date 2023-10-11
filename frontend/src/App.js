@@ -9,8 +9,9 @@ function App() {
     axios
       .get('/api/values')
       .then((res) => {
-        console.log(res);
-        setLists(res.data);
+        if (typeof res.data.length === 'number') {
+          setLists(Object.values(res.data));
+        }
       })
       .catch((err) => console.error(err));
   }, []);
