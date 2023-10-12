@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs
+  labels:
+    app: react-nodejs-mysql
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: react-nodejs-mysql
+    tier: backend
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nodejs-pv-claim
+  labels:
+    app: react-nodejs-mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs
+  labels:
+    app: react-nodejs-mysql
+spec:
+  selector:
+    matchLabels:
+      app: react-nodejs-mysql
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadate:
+      labels:
+        app: react-nodejs-mysql
+        tier: backend
+    spec:
+      containers:
+        - image: mannmae/fullstack-backend
+          name: nodejs
+          env:
+          - name: MYSQL_HOST
+            value: mysql
+          - name: MYSQL_USER
+            value: root
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-pass
+                key: password
+          - name: MYSQL_DATABASE
+            value: myapp
+          ports:
+          - containerPort: 8080
+            name: nodejs
+          volumeMounts:
+          - name: nodejs-persistent-storage
+            mountPath: /var/www/html
+        volumes:
+        - name: nodejs-persistent-storage
+          persistentVolumeClaim:
+            claimName: nodejs-pv-claim  

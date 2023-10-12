@@ -1,0 +1,7 @@
+secretGenerator:
+  - name: mysql-pass
+    literals:
+      - password=mannmae
+resources:
+  - mysql-deployment.yaml
+  - node-deployment.yaml
