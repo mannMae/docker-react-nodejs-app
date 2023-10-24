@@ -3,7 +3,7 @@ node {
         checkout scm
     }
     stage('Build image') {
-        steps {
+        step {
             dir('frontend'){
                 app = docker.build("mannmae/fullstack-frontend")
             }
