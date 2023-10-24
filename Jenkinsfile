@@ -1,4 +1,3 @@
-
 def component = [
 		React: false,
 		Nodejs: false,
