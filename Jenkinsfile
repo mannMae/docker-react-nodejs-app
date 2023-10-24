@@ -1,7 +1,7 @@
 def component = [
-		React: false,
-		Nodejs: false,
-		Mysql: false,
+		React: true,
+		Nodejs: true,
+		Mysql: true,
 ]
 
 pipeline {
