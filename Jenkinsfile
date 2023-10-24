@@ -3,7 +3,11 @@ node {
         checkout scm
     }
     stage('Build image') {
-        app = docker.build("mannmae/fullstack-frontend")
+        steps {
+            dir('frontend'){
+                app = docker.build("mannmae/fullstack-frontend")
+            }
+        }
     }
     stage('Push image') {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
