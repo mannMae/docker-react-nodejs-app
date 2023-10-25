@@ -59,6 +59,14 @@ pipeline {
 
 
 				script {
+					checkout([$class: 'GitSCM',
+							branches: [[name: '*/master']],
+							extensions: scm.extensions,
+							userRemoteConfigs: [[
+								url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
+								credentialId: 'github_credential2',
+							]]
+					])
 					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
 					withCredentials([usernamePassword(credentialsId: 'github_credential2', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
 						sh("""
@@ -66,8 +74,6 @@ pipeline {
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
 							echo ${previousTAG}
 							sed -i 's/fullstack-react/fullstack-react:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-							git config pull.rebase false
-							git pull manifest master
 							git add .
 							git status
 							git commit -m "update deployment"
