@@ -1,5 +1,5 @@
 def component = [
-		React: true,
+		React: false,
 		Nodejs: true,
 		Mysql: true,
 ]
