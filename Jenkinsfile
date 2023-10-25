@@ -67,7 +67,7 @@ pipeline {
 							]]
 					])
 					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-					withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', gitToolName: 'git-tool')]) {
+					withCredentials([gitUsernamePassword(credentialsId: 'github_credential3', gitToolName: 'git-tool')]) {
 						sh("""
 							#!/usr/bin/env bash
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
