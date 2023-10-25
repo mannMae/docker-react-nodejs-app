@@ -66,6 +66,7 @@ pipeline {
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
 							echo ${previousTAG}
 							sed -i 's/fullstack-react/fullstack-react:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
+							git config pull.rebase false
 							git pull manifest master
 							git add .
 							git status
