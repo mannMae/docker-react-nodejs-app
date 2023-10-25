@@ -49,24 +49,24 @@ spec:
         - image: mannmae/fullstack-backend
           name: nodejs
           env:
-          - name: MYSQL_HOST
-            value: mysql
-          - name: MYSQL_USER
-            value: root
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-pass
-                key: password
-          - name: MYSQL_DATABASE
-            value: myapp
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: MYSQL_DATABASE
+              value: myapp
           ports:
-          - containerPort: 8080
-            name: nodejs
+            - containerPort: 8080
+              name: nodejs
           volumeMounts:
-          - name: nodejs-persistent-storage
-            mountPath: /var/www/html
-        volumes:
+            - name: nodejs-persistent-storage
+              mountPath: /var/www/html
+      volumes:
         - name: nodejs-persistent-storage
           persistentVolumeClaim:
-            claimName: nodejs-pv-claim  
+            claimName: nodejs-pv-claim
