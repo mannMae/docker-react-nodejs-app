@@ -50,29 +50,30 @@ pipeline {
 		}
 
 		stage('Deploy') {
-			sh("""
-				git config --global user.name "mannMae"
-				git config --global user.email "daga4242@gmail.com"
-				git checkout -B master
-			""")
+			steps{
+				sh("""
+					git config --global user.name "mannMae"
+					git config --global user.email "daga4242@gmail.com"
+					git checkout -B master
+				""")
 
 
-			script {
-				previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
+				script {
+					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
+				}
+				withCredentials([usernamePassword(credentialsId: 'github-signin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+					sh("""
+						#!/usr/bin/env bash
+						git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+						echo ${previousTAG}
+						sed -i 's/mannmae:${previousTAG}/mannmae:${BUILD_NUMBER}/g' react-nodejs-mysql/react-deployment.yaml
+						git add react-nodejs-mysql/react-deployment.yaml
+						git status
+						git commit -m "update deployment"
+						git push origin master
+					""")
+				}
 			}
-
-		}
-		withCredentials([usernamePassword(credentialsId: 'github-signin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-			sh("""
-				#!/usr/bin/env bash
-				git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-				echo ${previousTAG}
-				sed -i 's/mannmae:${previousTAG}/mannmae:${BUILD_NUMBER}/g' react-nodejs-mysql/react-deployment.yaml
-				git add react-nodejs-mysql/react-deployment.yaml
-				git status
-				git commit -m "update deployment"
-				git push origin master
-			""")
 		}
 	}
 }
