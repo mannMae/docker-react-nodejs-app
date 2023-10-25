@@ -64,7 +64,7 @@ pipeline {
 							extensions: scm.extensions,
 							userRemoteConfigs: [[
 								url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
-								credentialId: 'github_credential2',
+								credentialsId: 'github_credential2',
 							]]
 					])
 					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
