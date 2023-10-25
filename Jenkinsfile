@@ -67,7 +67,7 @@ pipeline {
 							]]
 					])
 					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-					withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+					withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', gitToolName: 'git-tool')]) {
 						sh("""
 							#!/usr/bin/env bash
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
@@ -75,6 +75,7 @@ pipeline {
 							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
 							git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
 							git add .
+
 							git status
 							git commit -m "update deployment"
 							git pull origin master
