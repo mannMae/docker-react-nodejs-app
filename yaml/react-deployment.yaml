@@ -31,7 +31,7 @@ spec:
         tier: frontend
     spec:
       containers:
-        - image: mannmae/fullstack-frontend:24
+        - image: mannmae/fullstack-frontend:25
           name: react
           ports:
             - containerPort: 3000
