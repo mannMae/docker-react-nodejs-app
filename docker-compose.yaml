@@ -50,10 +50,10 @@ version: '3'
 services:
   react:
     build: ./frontend
-    container_name: fullstack-frontend
+    container_name: fullstack-react
   nodejs:
     build: ./backend
-    container_name: fullstack-backend
+    container_name: fullstack-nodejs
   mysql:
     build: ./mysql
     container_name: fullstack-mysql
