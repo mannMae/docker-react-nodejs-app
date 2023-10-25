@@ -67,7 +67,7 @@ pipeline {
 						git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
 						echo ${previousTAG}
 						sed -i 's/mannmae:${previousTAG}/mannmae:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-						git add yaml/react-deployment.yaml
+						git add .
 						git status
 						git commit -m "update deployment"
 						git push origin master
