@@ -66,7 +66,6 @@ pipeline {
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
 							echo ${previousTAG}
 							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-							git remote add manifest https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
 							git add .
 							git status
 							git commit -m "update deployment"
