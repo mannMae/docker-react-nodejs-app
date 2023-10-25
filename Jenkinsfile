@@ -60,18 +60,19 @@ pipeline {
 
 				script {
 					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-				}
-				withCredentials([usernamePassword(credentialsId: 'github_credential2', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-					sh("""
-						#!/usr/bin/env bash
-						git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-						echo ${previousTAG}
-						sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-						git add .
-						git status
-						git commit -m "update deployment"
-						git push origin master
-					""")
+					withCredentials([usernamePassword(credentialsId: 'github_credential2', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+						sh("""
+							#!/usr/bin/env bash
+							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+							echo ${previousTAG}
+							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
+							git remote add manifest https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
+							git add .
+							git status
+							git commit -m "update deployment"
+							git push manifest master
+						""")
+					}
 				}
 			}
 		}
