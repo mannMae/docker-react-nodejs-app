@@ -65,7 +65,8 @@ pipeline {
 							#!/usr/bin/env bash
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
 							echo ${previousTAG}
-							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
+							sed -i 's/fullstack-react/fullstack-react:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
+							git pull manifest master
 							git add .
 							git status
 							git commit -m "update deployment"
