@@ -77,7 +77,7 @@ pipeline {
 							git status
 							git commit -m "update deployment"
 							git pull origin master
-							git push --set-upstream origin master
+							git push origin master -f
 						""")
 					}
 				}
