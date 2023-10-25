@@ -76,7 +76,7 @@ pipeline {
 							git add .
 							git status
 							git commit -m "update deployment"
-							git push manifest master
+							git push origin master
 						""")
 					}
 				}
