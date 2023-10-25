@@ -71,7 +71,7 @@ pipeline {
 						sh("""
 							#!/usr/bin/env bash
 							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-							git pull origin mastter
+							git pull origin master
 							echo ${previousTAG}
 							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' react-nodejs-mysql/react-deployment.yaml
 							git add .
