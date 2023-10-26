@@ -91,16 +91,21 @@ pipeline {
                 sh 'mkdir -p gitOpsRepo'
                 dir("gitOpsRepo")
                 {
+					echo 'start updating manifest !!'
                     git branch: "main",
                     credentialsId: 'github_credential2',
                     url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
+					echo 'enter !!'
 
                     sh "sed -i 's/fullstack-react:.*\$/fullstack-react:${currentBuild.number}/g' react-deployment.yaml"
                     sh "sed -i 's/fullstack-nodejs:.*\$/fullstack-nodejs:${currentBuild.number}/g' nodejs-deployment.yaml"
                     sh "sed -i 's/fullstack-mysql:.*\$/fullstack-mysql:${currentBuild.number}/g' mysql-deployment.yaml"
+					echo 'sed !!'
 
                     sh "git add ."
+					echo 'add !!'
                     sh "git commit -m '[UPDATE] k8s ${currentBuild.number} image versioning'"
+					echo 'commit !!'
                     withCredentials([gitUsernamePassword(credentialsId: 'github_credential2',
                                      gitToolName: 'git-tool')]) {
 	                    echo 'Credential !!'
