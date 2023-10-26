@@ -49,42 +49,7 @@ pipeline {
 			}	
 		}
 
-		// stage('Deploy') {
-		// 	steps{
-		// 		sh("""
-		// 			git config --global user.name "mannMae"
-		// 			git config --global user.email "daga4242@gmail.com"
-		// 			git checkout -B master
-		// 		""")
 
-
-		// 		script {
-		// 			checkout([$class: 'GitSCM',
-		// 					branches: [[name: '*/master']],
-		// 					extensions: scm.extensions,
-		// 					userRemoteConfigs: [[
-		// 						url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
-		// 					]]
-		// 			])
-		// 			previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-		// 			withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', gitToolName: 'git-tool')]) {
-		// 				sh("""
-		// 					#!/usr/bin/env bash
-		// 					git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-		// 					echo ${previousTAG}
-		// 					sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-		// 					git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
-		// 					git add .
-
-		// 					git status
-		// 					git commit -m "update deployment"
-		// 					git pull origin master
-		// 					git push -u origin master
-		// 				""")
-		// 			}
-		// 		}
-		// 	}
-		// }
 		stage('K8S Manifest Update') {
             steps {
                 sh "ls"
