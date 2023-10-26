@@ -94,7 +94,7 @@ pipeline {
 					echo 'start updating manifest !!'
                     git branch: "master",
                     credentialsId: 'github_credential2',
-                    url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml.git'
+                    url: 'https://github.com/mannMae/k8s-cicd-prac.git'
 					echo 'enter !!'
 
                     sh "sed -i 's/fullstack-react:.*\$/fullstack-react:${currentBuild.number}/g' react-deployment.yaml"
@@ -109,7 +109,7 @@ pipeline {
                     withCredentials([gitUsernamePassword(credentialsId: 'github_credential2',
                                      gitToolName: 'git-tool')]) {
 	                    echo 'Credential !!'
-                        sh "git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml"
+                        sh "git remote set-url origin https://github.com/mannMae/k8s-cicd-prac"
 	                    echo 'call remote !!'
                         sh "git push -u origin master"
 	                    echo 'Push !!'
