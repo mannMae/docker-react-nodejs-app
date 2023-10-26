@@ -49,41 +49,73 @@ pipeline {
 			}	
 		}
 
-		stage('Deploy') {
-			steps{
-				sh("""
-					git config --global user.name "mannMae"
-					git config --global user.email "daga4242@gmail.com"
-					git checkout -B master
-				""")
+		// stage('Deploy') {
+		// 	steps{
+		// 		sh("""
+		// 			git config --global user.name "mannMae"
+		// 			git config --global user.email "daga4242@gmail.com"
+		// 			git checkout -B master
+		// 		""")
 
 
-				script {
-					checkout([$class: 'GitSCM',
-							branches: [[name: '*/master']],
-							extensions: scm.extensions,
-							userRemoteConfigs: [[
-								url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
-							]]
-					])
-					previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-					withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', gitToolName: 'git-tool')]) {
-						sh("""
-							#!/usr/bin/env bash
-							git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-							echo ${previousTAG}
-							sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
-							git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
-							git add .
+		// 		script {
+		// 			checkout([$class: 'GitSCM',
+		// 					branches: [[name: '*/master']],
+		// 					extensions: scm.extensions,
+		// 					userRemoteConfigs: [[
+		// 						url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
+		// 					]]
+		// 			])
+		// 			previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
+		// 			withCredentials([gitUsernamePassword(credentialsId: 'github_credential2', gitToolName: 'git-tool')]) {
+		// 				sh("""
+		// 					#!/usr/bin/env bash
+		// 					git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+		// 					echo ${previousTAG}
+		// 					sed -i 's/fullstack-frontend/fullstack-frontend:${BUILD_NUMBER}/g' yaml/react-deployment.yaml
+		// 					git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml
+		// 					git add .
 
-							git status
-							git commit -m "update deployment"
-							git pull origin master
-							git push -u origin master
-						""")
-					}
-				}
-			}
-		}
+		// 					git status
+		// 					git commit -m "update deployment"
+		// 					git pull origin master
+		// 					git push -u origin master
+		// 				""")
+		// 			}
+		// 		}
+		// 	}
+		// }
+		stage('K8S Manifest Update') {
+            steps {
+                sh "ls"
+                sh 'mkdir -p gitOpsRepo'
+                dir("gitOpsRepo")
+                {
+                    git branch: "main",
+                    credentialsId: 'github_credential2',
+                    url: 'https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml'
+
+                    sh "sed -i 's/fullstack-react:.*\$/fullstack-react:${currentBuild.number}/g' react-deployment.yaml"
+                    sh "sed -i 's/fullstack-nodejs:.*\$/fullstack-nodejs:${currentBuild.number}/g' nodejs-deployment.yaml"
+                    sh "sed -i 's/fullstack-mysql:.*\$/fullstack-mysql:${currentBuild.number}/g' mysql-deployment.yaml"
+
+                    sh "git add ."
+                    sh "git commit -m '[UPDATE] k8s ${currentBuild.number} image versioning'"
+                    withCredentials([gitUsernamePassword(credentialsId: 'github_credential2',
+                                     gitToolName: 'git-tool')]) {
+                        sh "git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml"
+                        sh "git push -u origin main"
+                    }
+                }
+            }
+            post {
+                    failure {
+                      echo 'K8S Manifest Update failure !'
+                    }
+                    success {
+                      echo 'K8S Manifest Update success !'
+                    }
+            }
+        }
 	}
 }
