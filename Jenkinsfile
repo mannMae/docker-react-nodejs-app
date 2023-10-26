@@ -105,7 +105,9 @@ pipeline {
                                      gitToolName: 'git-tool')]) {
                         sh "git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml"
                         sh "git push -u origin main"
+	                    echo 'Push !!'
                     }
+					echo 'Finish !!'
                 }
             }
             post {
