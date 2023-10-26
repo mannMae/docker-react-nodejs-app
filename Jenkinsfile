@@ -98,7 +98,7 @@ pipeline {
 					echo 'enter !!'
 
                     sh "sed -i 's/fullstack-react:.*\$/fullstack-react:${currentBuild.number}/g' react-deployment.yaml"
-                    sh "sed -i 's/fullstack-nodejs:.*\$/fullstack-nodejs:${currentBuild.number}/g' nodejs-deployment.yaml"
+                    sh "sed -i 's/fullstack-nodejs:.*\$/fullstack-nodejs:${currentBuild.number}/g' node-deployment.yaml"
                     sh "sed -i 's/fullstack-mysql:.*\$/fullstack-mysql:${currentBuild.number}/g' mysql-deployment.yaml"
 					echo 'sed !!'
 
