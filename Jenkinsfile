@@ -103,7 +103,9 @@ pipeline {
                     sh "git commit -m '[UPDATE] k8s ${currentBuild.number} image versioning'"
                     withCredentials([gitUsernamePassword(credentialsId: 'github_credential2',
                                      gitToolName: 'git-tool')]) {
+	                    echo 'Credential !!'
                         sh "git remote set-url origin https://github.com/mannMae/kubernetes-argo-cicd-prac-yaml"
+	                    echo 'call remote !!'
                         sh "git push -u origin main"
 	                    echo 'Push !!'
                     }
